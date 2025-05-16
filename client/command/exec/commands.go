@@ -73,7 +73,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 		Annotations: flags.RestrictTargets(consts.WindowsCmdsFilter),
 	}
 	flags.Bind("", false, executeAssemblyCmd, func(f *pflag.FlagSet) {
-		f.StringP("process", "p", "notepad.exe", "hosting process to inject into")
+		f.StringP("process", "p", "nslookup.exe", "hosting process to inject into")
 		f.StringP("method", "m", "", "Optional method (a method is required for a .NET DLL)")
 		f.StringP("class", "c", "", "Optional class name (required for .NET DLL)")
 		f.StringP("app-domain", "d", "", "AppDomain name to create for .NET assembly. Generated randomly if not set.")
@@ -84,7 +84,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 		f.BoolP("loot", "X", false, "save output as loot")
 		f.StringP("name", "n", "", "name to assign loot (optional)")
 		f.Uint32P("ppid", "P", 0, "parent process id (optional)")
-		f.StringP("process-arguments", "A", "", "arguments to pass to the hosting process")
+		f.StringP("process-arguments", "A", "\"", "arguments to pass to the hosting process")
 		f.BoolP("amsi-bypass", "M", false, "Bypass AMSI on Windows (only supported when used with --in-process)")
 		f.BoolP("etw-bypass", "E", false, "Bypass ETW on Windows (only supported when used with --in-process)")
 
@@ -109,7 +109,7 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 	flags.Bind("", false, executeShellcodeCmd, func(f *pflag.FlagSet) {
 		f.BoolP("rwx-pages", "r", false, "Use RWX permissions for memory pages")
 		f.Uint32P("pid", "p", 0, "Pid of process to inject into (0 means injection into ourselves)")
-		f.StringP("process", "n", `c:\windows\system32\notepad.exe`, "Process to inject into when running in interactive mode")
+		f.StringP("process", "n", `c:\windows\system32\nslookup.exe`, "Process to inject into when running in interactive mode")
 		f.BoolP("interactive", "i", false, "Inject into a new process and interact with it")
 		f.BoolP("shikata-ga-nai", "S", false, "encode shellcode using shikata ga nai prior to execution")
 		f.StringP("architecture", "A", "amd64", "architecture of the shellcode: 386, amd64 (used with --shikata-ga-nai flag)")
@@ -143,14 +143,14 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 	}
 	flags.Bind("", false, sideloadCmd, func(f *pflag.FlagSet) {
 		f.StringP("entry-point", "e", "", "Entrypoint for the DLL (Windows only)")
-		f.StringP("process", "p", `c:\windows\system32\notepad.exe`, "Path to process to host the shellcode")
+		f.StringP("process", "p", `c:\windows\system32\nslookup.exe`, "Path to process to host the shellcode")
 		f.BoolP("unicode", "w", false, "Command line is passed to unmanaged DLL function in UNICODE format. (default is ANSI)")
 		f.BoolP("save", "s", false, "save output to file")
 		f.BoolP("loot", "X", false, "save output as loot")
 		f.StringP("name", "n", "", "name to assign loot (optional)")
 		f.BoolP("keep-alive", "k", false, "don't terminate host process once the execution completes")
 		f.Uint32P("ppid", "P", 0, "parent process id (optional)")
-		f.StringP("process-arguments", "A", "", "arguments to pass to the hosting process")
+		f.StringP("process-arguments", "A", "\"", "arguments to pass to the hosting process")
 
 		f.Int64P("timeout", "t", flags.DefaultTimeout, "grpc timeout in seconds")
 	})
@@ -172,14 +172,14 @@ func Commands(con *console.SliverClient) []*cobra.Command {
 		Annotations: flags.RestrictTargets(consts.WindowsCmdsFilter),
 	}
 	flags.Bind("", false, spawnDllCmd, func(f *pflag.FlagSet) {
-		f.StringP("process", "p", `c:\windows\system32\notepad.exe`, "Path to process to host the shellcode")
+		f.StringP("process", "p", `c:\windows\system32\nslookup.exe`, "Path to process to host the shellcode")
 		f.StringP("export", "e", "ReflectiveLoader", "Entrypoint of the Reflective DLL")
 		f.BoolP("save", "s", false, "save output to file")
 		f.BoolP("loot", "X", false, "save output as loot")
 		f.StringP("name", "n", "", "name to assign loot (optional)")
 		f.BoolP("keep-alive", "k", false, "don't terminate host process once the execution completes")
 		f.UintP("ppid", "P", 0, "parent process id (optional)")
-		f.StringP("process-arguments", "A", "", "arguments to pass to the hosting process")
+		f.StringP("process-arguments", "A", "\"", "arguments to pass to the hosting process")
 
 		f.Int64P("timeout", "t", flags.DefaultTimeout, "grpc timeout in seconds")
 	})

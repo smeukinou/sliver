@@ -616,7 +616,7 @@ It is a directory containing any number of files, with a mandatory [[.Bold]]mani
 }
 
 Each command will have the [[.Bold]]--process[[.Normal]] flag defined, which allows you to specify the process to inject into. The following default values are set:
- - Windows: c:\windows\system32\notepad.exe
+ - Windows: c:\windows\system32\nslookup.exe
  - Linux: /bin/bash
  - Mac OS X: /Applications/Safari.app/Contents/MacOS/SafariForWebKitDevelopment
 `

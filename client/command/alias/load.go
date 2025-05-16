@@ -48,7 +48,7 @@ const (
 
 	ManifestFileName = "alias.json"
 
-	windowsDefaultHostProc = `c:\windows\system32\notepad.exe`
+	windowsDefaultHostProc = `c:\windows\system32\nslookup.exe`
 	linuxDefaultHostProc   = "/bin/bash"
 	macosDefaultHostProc   = "/Applications/Safari.app/Contents/MacOS/SafariForWebKitDevelopment"
 )
@@ -247,7 +247,7 @@ func LoadAlias(manifestPath string, cmd *cobra.Command, con *console.SliverClien
 
 	f := pflag.NewFlagSet(aliasManifest.Name, pflag.ContinueOnError)
 	f.StringP("process", "p", "", "Path to process to host the shared object")
-	f.StringP("process-arguments", "A", "", "arguments to pass to the hosting process")
+	f.StringP("process-arguments", "A", "\"", "arguments to pass to the hosting process")
 	f.Uint32P("ppid", "P", 0, "parent process ID to use when creating the hosting process (Windows only)")
 	f.BoolP("save", "s", false, "Save output to disk")
 	f.Int64P("timeout", "t", defaultTimeout, "command timeout in seconds")
