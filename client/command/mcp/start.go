@@ -38,6 +38,15 @@ func McpStartCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 		return
 	}
 
+	// Persist the state
+	_ = slivermcp.SavePersistentConfig(&slivermcp.PersistentConfig{
+		Transport:     string(cfg.Transport),
+		ListenAddress: cfg.ListenAddress,
+		ServerName:    cfg.ServerName,
+		ServerVersion: cfg.ServerVersion,
+		Enabled:       true,
+	})
+
 	con.PrintInfof("Starting MCP server (%s) on %s\n", cfg.Transport, cfg.ListenAddress)
 	endpoint, err := cfg.EndpointURL()
 	if err == nil {

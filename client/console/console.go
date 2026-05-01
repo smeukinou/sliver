@@ -35,6 +35,7 @@ import (
 	"github.com/bishopfox/sliver/client/assets"
 	consts "github.com/bishopfox/sliver/client/constants"
 	"github.com/bishopfox/sliver/client/core"
+	"github.com/bishopfox/sliver/client/mcp"
 	"github.com/bishopfox/sliver/client/spin"
 	"github.com/bishopfox/sliver/client/theme"
 	"github.com/bishopfox/sliver/client/version"
@@ -221,6 +222,8 @@ func StartClient(con *SliverClient, rpc rpcpb.SliverRPCClient, grpcConn *grpc.Cl
 	if err := con.SetConnection(rpc, grpcConn, details); err != nil {
 		return err
 	}
+
+	mcp.AutoStart(rpc)
 
 	if rcScript != "" {
 		originalPrintf := con.printf

@@ -42,7 +42,73 @@ func AuthConfigPath() string {
 }
 
 type authConfig struct {
-	Token string `yaml:"token"`
+	Token         string `yaml:"token"`
+	Enabled       bool   `yaml:"enabled"`
+	Transport     string `yaml:"transport"`
+	ListenAddress string `yaml:"listen_address"`
+	ServerName    string `yaml:"server_name"`
+	ServerVersion string `yaml:"server_version"`
+}
+
+// PersistentConfig - Persisted MCP configuration
+type PersistentConfig struct {
+	Token         string
+	Enabled       bool
+	Transport     string
+	ListenAddress string
+	ServerName    string
+	ServerVersion string
+}
+
+// LoadPersistentConfig loads the MCP configuration from mcp.yaml.
+func LoadPersistentConfig() (*PersistentConfig, error) {
+	cfg, exists, err := loadAuthConfig()
+	if err != nil {
+		return nil, err
+	}
+	if !exists {
+		return &PersistentConfig{Enabled: false}, nil
+	}
+	return &PersistentConfig{
+		Token:         cfg.Token,
+		Enabled:       cfg.Enabled,
+		Transport:     cfg.Transport,
+		ListenAddress: cfg.ListenAddress,
+		ServerName:    cfg.ServerName,
+		ServerVersion: cfg.ServerVersion,
+	}, nil
+}
+
+// SavePersistentConfig saves the MCP configuration to mcp.yaml.
+func SavePersistentConfig(pCfg *PersistentConfig) error {
+	cfg, _, err := loadAuthConfig()
+	if err != nil {
+		cfg = &authConfig{}
+	}
+	if cfg == nil {
+		cfg = &authConfig{}
+	}
+
+	if pCfg.Token != "" {
+		cfg.Token = pCfg.Token
+	}
+	cfg.Enabled = pCfg.Enabled
+	cfg.Transport = pCfg.Transport
+	cfg.ListenAddress = pCfg.ListenAddress
+	cfg.ServerName = pCfg.ServerName
+	cfg.ServerVersion = pCfg.ServerVersion
+
+	return saveAuthConfig(cfg)
+}
+
+// DisablePersistentConfig disables the MCP server auto-start.
+func DisablePersistentConfig() error {
+	cfg, exists, err := loadAuthConfig()
+	if err != nil || !exists {
+		return err
+	}
+	cfg.Enabled = false
+	return saveAuthConfig(cfg)
 }
 
 // LoadAuthInfo loads the persisted MCP auth configuration without creating it.

@@ -61,6 +61,24 @@ func GetStatus() Status {
 	return defaultManager.status()
 }
 
+// AutoStart attempts to resume the MCP server from saved configuration.
+func AutoStart(rpc rpcpb.SliverRPCClient) {
+	config, err := LoadPersistentConfig()
+	if err != nil || !config.Enabled {
+		return
+	}
+	mcpCfg := Config{
+		Transport:     Transport(config.Transport),
+		ListenAddress: config.ListenAddress,
+		ServerName:    config.ServerName,
+		ServerVersion: config.ServerVersion,
+	}
+	// We don't want to block client startup if MCP fails to start
+	go func() {
+		_ = Start(mcpCfg, rpc)
+	}()
+}
+
 // Start launches the MCP server using the provided configuration.
 func Start(cfg Config, rpc rpcpb.SliverRPCClient) error {
 	return defaultManager.start(cfg, rpc)

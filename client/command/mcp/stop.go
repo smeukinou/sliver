@@ -20,5 +20,6 @@ func McpStopCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 		con.PrintErrorf("%s\n", err)
 		return
 	}
+	_ = clientmcp.DisablePersistentConfig()
 	con.PrintInfof("MCP server stopped\n")
 }
